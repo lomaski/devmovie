@@ -29,6 +29,7 @@ export const Info = styled.div`
     text-align: center; /* Opcional: centraliza o texto */
     width: 50%; /* Opcional: limita a largura */
     padding: 30px; /* Opcional: espaçamento interno */
+    margin: 10% 0;
 
     h1 {
         font-size: 5rem;

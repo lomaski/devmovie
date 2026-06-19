@@ -19,4 +19,6 @@ export const Container = styled.div`
     .swipe-wrapper {
         display: flex;
     }
+
+    
 `;
