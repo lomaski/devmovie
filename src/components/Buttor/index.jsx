@@ -1,9 +1,9 @@
 import { ButtonRed, ButtonWhite } from "./styles";
 
-function Button({ children, variant = "white" }) {
+function Button({ children, variant = "white", ...rest }) {
   return variant === "red" 
-    ? <ButtonRed>{children}</ButtonRed>
-    : <ButtonWhite>{children}</ButtonWhite>;
+    ? <ButtonRed {...rest}>{children}</ButtonRed>
+    : <ButtonWhite {...rest}>{children}</ButtonWhite>;
 }
 
 export default Button;
