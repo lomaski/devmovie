@@ -1,49 +1,58 @@
 import { Container } from "./styles";
-import { useEffect, useState } from "react"; // Added useState
-import { useParams } from "react-router-dom";
-// Included getMovieById in the import line below
-import { getMovies, getSimilar, getDetails, getMovieById } from "../../services/getDate";
+import { useEffect, useState } from "react"; 
+import { data, useParams } from "react-router-dom";
+import { getMovieVideos, getSimilar, getDetails, getMovieById, getMovieCredits } from "../../services/getDate";
 
-function Detail(props) {
+function Detail() {
   const { id } = useParams();
 
-  // Added state hooks to store the API results
-  const [movies, setMovies] = useState(null);
+  const [moviesVideos, setMoviesVideos] = useState(null);
   const [similar, setSimilar] = useState(null);
   const [details, setDetails] = useState(null);
   const [movieById, setMovieById] = useState(null);
+  const [movieCredits, setMovieCredits] = useState(null);
 
   useEffect(() => {
-    async function getAllData() {
-        Promise.all([
-            getMovies(),
-            getSimilar(id),
-            getDetails(id),
-            getMovieById(id)
-        ])
-        .then(([movies, similar, details, movieById]) => {
-            setMovies(movies);
-            setSimilar(similar);
-            setDetails(details);
-            setMovieById(movieById);
-        })
-        .catch(error => {
-            console.error("Erro ao buscar dados:", error);
-        });
-    } // <-- Fixed: Added this missing closing brace
+  async function getAllData() {
+    // 1. Change Promise.all to Promise.allSettled
+    Promise.allSettled([
+        getMovieVideos(id),
+        getSimilar(id),
+        getDetails(id),
+        getMovieCredits(id)
+    ])
+    .then(([videosResult, similarResult, detailsResult, creditsResult]) => {
+        console.log({moviesVideos, similar, details, movieById, movieCredits});
+        if (videosResult.status === 'fulfilled') setMoviesVideos(videosResult.value);
+        if (similarResult.status === 'fulfilled') setSimilar(similarResult.value);
+        if (detailsResult.status === 'fulfilled') setDetails(detailsResult.value);
+        
+        // Handle credits smoothly if it fails
+        if (creditsResult.status === 'fulfilled') {
+            setCredits(creditsResult.value);
+        } else {
+            console.warn("Credits failed to load due to TMDB 502 error, using empty fallback.");
+            setCredits({ cast: [], crew: [] }); // Fallback so map() doesn't break
+        }
+    })
+    .catch(error => {
+        console.error("Erro inesperado:", error);
+    });
+  } 
 
-    getAllData();
-  }, [id]);
+  getAllData();
+}, [id]);
 
-  console.log("Movies:", movies);
-  console.log("Similar:", similar);
-  console.log("Details:", details);
-  console.log("Movie By ID:", movieById);
+
+  console.log("moviesVideos:", moviesVideos);
+    console.log("similar:", similar);
+    console.log("details:", details);
+    console.log("movieById:", movieById);
+    console.log("movieCredits:", movieCredits);
 
   return (
     <Container>
         <h1>Detail {id}</h1>
-
     </Container>
   );
 }
