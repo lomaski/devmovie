@@ -1,0 +1,60 @@
+import api from "./api";
+
+export async function getMovies() {
+    const { 
+        data: { results } } = 
+        await api.get('/movie/popular');
+    
+    return results[0];}
+
+export async function getTopRated() {
+    const { 
+        data: { results } } = 
+        await api.get('/movie/top_rated');
+    
+    return results;}
+
+export async function getTopRatedTv() {
+    const { 
+        data: { results } } = 
+        await api.get('/tv/top_rated');
+    
+    return results;}
+
+export async function getPopular() {
+    const { 
+        data: { results } } = 
+        await api.get('/movie/popular');
+    
+    return results;}
+
+export async function getTopPopular() {
+    const { 
+        data: { results } } = 
+        await api.get('/person/popular');
+    
+    return results;}
+
+export async function getMovie(movieId) {
+    const { data } = await api.get(`/movie/${movieId}`);
+
+    return data;
+}
+
+export async function getSimilar(movieId) {
+    const { data } = await api.get(`/movie/${movieId}/similar`);
+
+    return data;
+}
+
+export async function getDetails(movieId) {
+    const { data } = await api.get(`/review/${movieId}`);
+
+    return data;
+}
+
+export async function getMovieById(movieId) {
+    const { data } = await api.get(`/movie/${movieId}`);
+
+    return data;
+}

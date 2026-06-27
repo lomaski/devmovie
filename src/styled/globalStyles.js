@@ -11,8 +11,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    background-color: #000;
-    color: rgb(255, 255, 255);
+    background-color: #000!important;
+    color: rgb(255, 255, 255)!important;
   }
 `;
 

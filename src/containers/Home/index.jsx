@@ -2,11 +2,13 @@ import api from "../../services/api";
 import Button from "../../components/Buttor"; 
 import Slider from "../../components/Slider";
 import Modal from "../../components/Modal";
+import { useNavigate } from "react-router-dom";
 import { Background, Info, Porter, Container, ContainerButtons } from "./styles";
-
+import { getMovies, getTopRated, getTopRatedTv, getPopular, getTopPopular } from "../../services/getDate";
 import { useState, useEffect } from "react";
 
 function Home() {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [movies, setMovies] = useState();
   const [topRated, setTopRated] = useState([]);
@@ -14,38 +16,30 @@ function Home() {
   const [popular, setPopular] = useState([]);
   const [topPopular, setTopPopular] = useState([]);
 
+
   useEffect(() => {
-    async function getMovies() {
-      const { data: { results } } = await api.get('/movie/popular');
-      setMovies(results[1]); 
+    async function getAllData() {
+      Promise.all([
+        getMovies(),
+        getTopRated(),
+        getTopRatedTv(),
+        getPopular(),
+        getTopPopular()
+      ]).then(([movies, topRated, topRatedTv, popular, topPopular]) => {
+        setMovies(movies);
+        setTopRated(topRated);
+        setTopRatedTv(topRatedTv);
+        setPopular(popular);
+        setTopPopular(topPopular);
+      }).catch(error => {
+        console.error("Erro ao buscar dados:", error);
+      });
     }
 
-    async function getTopRated() {
-      const { data: { results } } = await api.get('/movie/top_rated');
-      setTopRated(results);
-    }
-    
-    async function getTopRatedTv() {
-      const { data: { results } } = await api.get('/tv/top_rated');
-      setTopRatedTv(results); 
-    }
+    getAllData();
+  }, []); // <-- Added '}' here to close the useEffect function body
 
-    async function getPopular() {
-      const { data: { results } } = await api.get('/movie/popular');
-      setPopular(results);
-    }
 
-    async function getTopPopular() {
-      const { data: { results } } = await api.get('/person/popular');
-      setTopPopular(results);
-    }
-
-    getMovies();
-    getTopRated();
-    getTopRatedTv();
-    getPopular();
-    getTopPopular();
-  }, []);
 
   return (
     <>
@@ -60,7 +54,9 @@ function Home() {
               <p>{movies.overview}</p>
 
               <ContainerButtons>
-                <Button variant="red">Assistir agora</Button>
+                <Button variant="red" onClick={() => navigate(`/detail/${movies.id}`)}>
+                  Assistir agora
+                </Button>
                 <Button variant="white" onClick={() => setShowModal(true)}>
                   Assistir o Trailer
                 </Button>

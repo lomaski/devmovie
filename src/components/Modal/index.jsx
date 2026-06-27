@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api"; 
+import { getMovies } from "../../services/getDate";
 // Import CloseButton here
 import { Background, Container, CloseButton } from "./styles"; 
 
@@ -8,18 +9,10 @@ function Modal({ movieId, setShowModal }) {
 
   useEffect(() => {
     async function getMovies() {
-      try {
-        const { data: { results } } = await api.get(`/movie/${movieId}/videos`);
-        setMovie(results[1] || results[0]); 
-      } catch (error) {
-        console.error("Erro ao buscar vídeos do filme:", error);
-      }
+      setMovie(await getMovies(movieId)); // Reset movie state before fetching new data
     }
-
-    if (movieId) {
-      getMovies(); 
-    }
-  }, [movieId]); 
+    getMovies();
+  }, []); 
 
   return (
     <Background onClick={() => setShowModal(false)}>
