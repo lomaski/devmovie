@@ -38,6 +38,12 @@ export const Background = styled.div`
   }
 `;
 
+export const Foxy = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
 export const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -52,12 +58,34 @@ export const Container = styled.div`
 export const Coven = styled.div`
   width: 500px;
   border-radius: 30px;
-  /* CORRIGIDO: A sintaxe antiga do CSS continha barras '/' inválidas para a propriedade box-shadow tradicional */
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
   animation: ${fadeIn} 0.5s linear;
+  margin-bottom: 50px;
 
   img {
     width: 100%;
     border-radius: 30px;
+  }
+`;
+
+export const Info = styled.div`
+  color: white;
+  padding: 20px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+
+  h2 {
+    font-size: 50px;
+    font-weight: 700;
+
+  }
+
+  p {
+    font-weight: 700;
+    margin-bottom: 30px;
+    margin-top: 20px;
   }
 `;

@@ -1,8 +1,10 @@
-import { Container, Background, Coven } from "./styles";
+import { Container, Background, Foxy, Coven, Info } from "./styles";
 import { useEffect, useState } from "react"; 
 import { useParams } from "react-router-dom"; 
 import { getMovieVideos, getSimilar, getDetails, getMovieById, getMovieCredits } from "../../services/getDate";
 import { getImages } from "../../utils/getlmages";
+import SpanGenres from "../../components/SpanGenres";
+import Credits from "../../components/Credits";
 
 function Detail() {
   const { id } = useParams();
@@ -18,7 +20,6 @@ function Detail() {
       if (!id) return; 
 
       try {
-        // Executa todas as chamadas em paralelo de forma segura
         const [videosRes, similarRes, detailsRes, movieByIdRes, creditsRes] = await Promise.allSettled([
           getMovieVideos(id),
           getSimilar(id),
@@ -27,13 +28,11 @@ function Detail() {
           getMovieCredits(id)
         ]);
 
-        // Atualiza cada estado individualmente se a requisição deu certo
         if (videosRes.status === 'fulfilled') setMoviesVideos(videosRes.value);
         if (similarRes.status === 'fulfilled') setSimilar(similarRes.value);
         if (detailsRes.status === 'fulfilled') setDetails(detailsRes.value);
         if (movieByIdRes.status === 'fulfilled') setMovieById(movieByIdRes.value);
         
-        // Tratamento especial para os créditos
         if (creditsRes.status === 'fulfilled') {
           setMovieCredits(creditsRes.value);
         } else {
@@ -49,23 +48,38 @@ function Detail() {
     getAllData();
   }, [id]);
 
-  // Monitora os estados mudando no console
-  useEffect(() => {
-    if (details || moviesVideos) {
-      console.log("Estados atualizados com sucesso:", { moviesVideos, similar, details, movieById, movieCredits });
-    }
-  }, [moviesVideos, similar, details, movieById, movieCredits]);
+  // Escolhe o objeto de dados que estiver disponível primeiro
+  const movieData = details || movieById;
+
+  // Enquanto a API não responder, exibe uma mensagem de carregando
+  if (!movieData) {
+    return <p style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Carregando dados do filme...</p>;
+  }
 
   return (
     <>
-      <Background image={getImages(details?.backdrop_path || movieById?.backdrop_path)}></Background>
+      <Background image={getImages(movieData.backdrop_path)}></Background>
       <Container>
+        <Foxy>
+          {/* Componente Coven renderizando o pôster do filme */}
           <Coven>
-            <img src={getImages(details?.poster_path || movieById?.poster_path)} alt={details?.title || movieById?.title} />
+            <img src={getImages(movieData.poster_path)} alt={movieData.title} />
           </Coven>
+
+          {/* Componente Info renderizando os textos */}
+          <Info>
+            <h2>{movieData.title}</h2>
+            <SpanGenres genres={movieData.genres} />
+            <p>{movieData.overview}</p>
+            <div>
+              <Credits credits={movieCredits} />
+            </div>
+          </Info>
+        </Foxy>
       </Container>
     </>
   );
 }
 
 export default Detail;
+
