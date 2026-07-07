@@ -1,7 +1,8 @@
-import { Container } from "./styles";
+import { Container, Background, Coven } from "./styles";
 import { useEffect, useState } from "react"; 
-import { data, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; 
 import { getMovieVideos, getSimilar, getDetails, getMovieById, getMovieCredits } from "../../services/getDate";
+import { getImages } from "../../utils/getlmages";
 
 function Detail() {
   const { id } = useParams();
@@ -13,47 +14,57 @@ function Detail() {
   const [movieCredits, setMovieCredits] = useState(null);
 
   useEffect(() => {
-  async function getAllData() {
-    // 1. Change Promise.all to Promise.allSettled
-    Promise.allSettled([
-        getMovieVideos(id),
-        getSimilar(id),
-        getDetails(id),
-        getMovieCredits(id)
-    ])
-    .then(([videosResult, similarResult, detailsResult, creditsResult]) => {
-        console.log({moviesVideos, similar, details, movieById, movieCredits});
-        if (videosResult.status === 'fulfilled') setMoviesVideos(videosResult.value);
-        if (similarResult.status === 'fulfilled') setSimilar(similarResult.value);
-        if (detailsResult.status === 'fulfilled') setDetails(detailsResult.value);
+    async function getAllData() {
+      if (!id) return; 
+
+      try {
+        // Executa todas as chamadas em paralelo de forma segura
+        const [videosRes, similarRes, detailsRes, movieByIdRes, creditsRes] = await Promise.allSettled([
+          getMovieVideos(id),
+          getSimilar(id),
+          getDetails(id),
+          getMovieById(id),
+          getMovieCredits(id)
+        ]);
+
+        // Atualiza cada estado individualmente se a requisição deu certo
+        if (videosRes.status === 'fulfilled') setMoviesVideos(videosRes.value);
+        if (similarRes.status === 'fulfilled') setSimilar(similarRes.value);
+        if (detailsRes.status === 'fulfilled') setDetails(detailsRes.value);
+        if (movieByIdRes.status === 'fulfilled') setMovieById(movieByIdRes.value);
         
-        // Handle credits smoothly if it fails
-        if (creditsResult.status === 'fulfilled') {
-            setCredits(creditsResult.value);
+        // Tratamento especial para os créditos
+        if (creditsRes.status === 'fulfilled') {
+          setMovieCredits(creditsRes.value);
         } else {
-            console.warn("Credits failed to load due to TMDB 502 error, using empty fallback.");
-            setCredits({ cast: [], crew: [] }); // Fallback so map() doesn't break
+          console.warn("Créditos falharam ao carregar, aplicando fallback vazio.");
+          setMovieCredits({ cast: [], crew: [] }); 
         }
-    })
-    .catch(error => {
-        console.error("Erro inesperado:", error);
-    });
-  } 
 
-  getAllData();
-}, [id]);
+      } catch (error) {
+        console.error("Erro inesperado no fluxo de dados:", error);
+      }
+    }
 
+    getAllData();
+  }, [id]);
 
-  console.log("moviesVideos:", moviesVideos);
-    console.log("similar:", similar);
-    console.log("details:", details);
-    console.log("movieById:", movieById);
-    console.log("movieCredits:", movieCredits);
+  // Monitora os estados mudando no console
+  useEffect(() => {
+    if (details || moviesVideos) {
+      console.log("Estados atualizados com sucesso:", { moviesVideos, similar, details, movieById, movieCredits });
+    }
+  }, [moviesVideos, similar, details, movieById, movieCredits]);
 
   return (
-    <Container>
-        <h1>Detail {id}</h1>
-    </Container>
+    <>
+      <Background image={getImages(details?.backdrop_path || movieById?.backdrop_path)}></Background>
+      <Container>
+          <Coven>
+            <img src={getImages(details?.poster_path || movieById?.poster_path)} alt={details?.title || movieById?.title} />
+          </Coven>
+      </Container>
+    </>
   );
 }
 
