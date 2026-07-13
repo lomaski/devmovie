@@ -2,7 +2,7 @@ import { Container, Background, Foxy, Coven, Info } from "./styles";
 import { useEffect, useState } from "react"; 
 import { useParams } from "react-router-dom"; 
 import { getMovieVideos, getSimilar, getDetails, getMovieById, getMovieCredits } from "../../services/getDate";
-import { getImages } from "../../utils/getlmages";
+import { getImages } from "../../utils/getImages";
 import SpanGenres from "../../components/SpanGenres";
 import Credits from "../../components/Credits";
 
@@ -51,32 +51,27 @@ function Detail() {
   // Escolhe o objeto de dados que estiver disponível primeiro
   const movieData = details || movieById;
 
-  // Enquanto a API não responder, exibe uma mensagem de carregando
-  if (!movieData) {
-    return <p style={{ color: 'white', textAlign: 'center', marginTop: '50px' }}>Carregando dados do filme...</p>;
-  }
-
   return (
     <>
       <Background image={getImages(movieData.backdrop_path)}></Background>
-      <Container>
-        <Foxy>
-          {/* Componente Coven renderizando o pôster do filme */}
-          <Coven>
-            <img src={getImages(movieData.poster_path)} alt={movieData.title} />
-          </Coven>
+      {movieData && (
+        <Container>
+          <Foxy>
+            <Coven>
+              <img src={getImages(movieData.poster_path)} alt={movieData.title} />
+            </Coven>
 
-          {/* Componente Info renderizando os textos */}
-          <Info>
-            <h2>{movieData.title}</h2>
-            <SpanGenres genres={movieData.genres} />
-            <p>{movieData.overview}</p>
-            <div>
-              <Credits credits={movieCredits} />
-            </div>
-          </Info>
-        </Foxy>
-      </Container>
+            <Info>
+              <h2>{movieData.title}</h2>
+              <SpanGenres genres={movieData.genres} />
+              <p>{movieData.overview}</p>
+              <div>
+                <Credits credits={movieCredits} />
+              </div>
+            </Info>
+          </Foxy>
+        </Container>
+      )}
     </>
   );
 }

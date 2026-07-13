@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const Background = styled.div`
-    background-image: url(${props => props.image});
+    /* ALTERADO: Adicionado o $ antes de image */
+    background-image: url(${props => props.$image});
     height: 100vh;
     background-size: cover;
     background-position: center;
@@ -48,7 +49,6 @@ export const Info = styled.div`
     }
 `;
 
-// Fixed line below: changed 'sections' to 'section'
 export const Container = styled.section`
     display: flex;
     align-items: space-around;

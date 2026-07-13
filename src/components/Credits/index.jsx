@@ -1,21 +1,15 @@
-import { Title, Contoiner} from "./styles";
+import { getImages } from "../../utils/getImages";
+import { Container } from "./styles";
 
 function Credits({ credits }) {
-    console.log(credits);
+    console.log("Créditos recebidos:", credits); // Log para depuração
   return (
     <>
-    <Title>Créditos</Title>
-    <Container>
-        {credits.cast && credits.cast.length > 0 ? ( 
-          <ul>
-            {credits.cast.map((actor) => (
-              <li key={actor.id}>{actor.name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Créditos não disponíveis.</p>
-        )}
-    </Container>
+      <Container>
+        
+      </Container>
     </>
   );
 }
+
+export default Credits;

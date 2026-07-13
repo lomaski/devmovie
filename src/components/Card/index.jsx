@@ -1,15 +1,19 @@
-import { getImages } from "../../utils/getlmages";
-import { Container } from "./styles.js";
+import { getImages } from "../../utils/getImages";
+import { Container, CardImage, CardInfo, CardTitle } from "./styles";
 
 function Card({ info }) {
   return (
     <Container>
-      <a href={info.homepage} target="_blank" rel="noopener noreferrer">
-        <img src={getImages(info.poster_path || info.profile_path || '')} alt={info.title} />
-        <h3>{info.original_name || info.title}</h3>
-      </a>
+      <CardImage 
+        src={info.poster_path ? getImages(info.poster_path) : '/placeholder-image.png'} 
+        alt={info.original_name || info.title}
+        loading="lazy"
+      />
+      <CardInfo>
+        <CardTitle>{info.original_name || info.title}</CardTitle>
+      </CardInfo>
     </Container>
-  )
+  );
 }
 
 export default Card;
