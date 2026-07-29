@@ -1,5 +1,5 @@
 import api from "../../services/api";
-//import Button from "../../components/Button";
+import Button from "../../components/Button";
 import Slider from "../../components/Slider";
 import Modal from "../../components/Modal";
 import { getImages } from "../../utils/getImages";
@@ -67,12 +67,12 @@ function Home() {
               <p>{featuredMovie.overview}</p>
 
               <ContainerButtons>
-                {/* <Button variant="red" onClick={() => navigate(`/detail/${featuredMovie.id}`)}>
+                <Button variant="red" onClick={() => navigate(`/detail/${featuredMovie.id}`)}>
                   Assistir agora
                 </Button>
                 <Button variant="white" onClick={() => setShowModal(true)}>
                   Assistir o Trailer
-                </Button> */}
+                </Button>
                 link: /detail/{featuredMovie.id}
               </ContainerButtons>
             </Info>

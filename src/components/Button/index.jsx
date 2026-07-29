@@ -1,4 +1,4 @@
-import { ButtonRed, ButtonWhite } from "./styles.jsx";
+import { ButtonRed, ButtonWhite } from "./styles.js";
 
 function Button({ children, variant = "white", ...rest }) {
   return variant === "red"
