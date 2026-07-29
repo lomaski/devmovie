@@ -73,7 +73,7 @@ function Home() {
                 <Button variant="white" onClick={() => setShowModal(true)}>
                   Assistir o Trailer
                 </Button>
-                link: /detail/{featuredMovie.id}
+                {/* link: /detail/{featuredMovie.id} */}
               </ContainerButtons>
             </Info>
             <Porter>
