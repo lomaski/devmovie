@@ -1,7 +1,7 @@
-import { ButtonRed, ButtonWhite } from "./styles";
+import { ButtonRed, ButtonWhite } from "./styles.jsx";
 
 function Button({ children, variant = "white", ...rest }) {
-  return variant === "red" 
+  return variant === "red"
     ? <ButtonRed {...rest}>{children}</ButtonRed>
     : <ButtonWhite {...rest}>{children}</ButtonWhite>;
 }

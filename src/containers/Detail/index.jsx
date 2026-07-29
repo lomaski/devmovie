@@ -48,12 +48,17 @@ function Detail() {
     getAllData();
   }, [id]);
 
-  // Escolhe o objeto de dados que estiver disponível primeiro
   const movieData = details || movieById;
+
+  if (!movieData) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <>
-      <Background image={getImages(movieData.backdrop_path)}></Background>
+      <Background image={getImages(movieData.backdrop_path)}>
+      </Background>
+      
       {movieData && (
         <Container>
           <Foxy>
@@ -62,6 +67,7 @@ function Detail() {
             </Coven>
 
             <Info>
+              image={getImages(movieData.backdrop_path)}
               <h2>{movieData.title}</h2>
               <SpanGenres genres={movieData.genres} />
               <p>{movieData.overview}</p>
@@ -77,4 +83,3 @@ function Detail() {
 }
 
 export default Detail;
-

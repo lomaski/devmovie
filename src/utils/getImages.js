@@ -1,5 +1,5 @@
 export function getImages(path) {
-  return `https://tmdb.org/${path}`;
+  return `https://www.themoviedb.org${path}`;
 }
 
 export default getImages;
