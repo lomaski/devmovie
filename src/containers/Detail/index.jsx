@@ -1,10 +1,11 @@
-import { Container, Background, Foxy, Coven, Info } from "./styles";
+import { Container, Background, Foxy, Coven, Info, ContainerMovie } from "./styles";
 import { useEffect, useState } from "react"; 
 import { useParams } from "react-router-dom"; 
 import { getMovieVideos, getSimilar, getDetails, getMovieById, getMovieCredits } from "../../services/getDate";
 import { getImages } from "../../utils/getImages";
 import SpanGenres from "../../components/SpanGenres";
 import Credits from "../../components/Credits";
+import Slider from "../../components/Slider";
 
 function Detail() {
   const { id } = useParams();
@@ -51,17 +52,16 @@ function Detail() {
   const movieData = details || movieById;
 
   if (!movieData) {
-    return <div>Carregando...</div>;
+    return <Background>Carregando...</Background>;
   }
 
   return (
     <>
-      <Background image={getImages(movieData.backdrop_path)}>
-      </Background>
+      <Background image={getImages(movieData.backdrop_path)}></Background>
       
       {movieData && (
+        <>
         <Container>
-          <Foxy>
             <Coven>
               <img src={getImages(movieData.poster_path)} alt={movieData.title} />
             </Coven>
@@ -75,9 +75,31 @@ function Detail() {
                 <Credits credits={movieCredits} />
               </div>
             </Info>
-          </Foxy>
         </Container>
+        <ContainerMovie>
+          {console.log(moviesVideos)}
+          {moviesVideos && moviesVideos.length > 0 ? (
+            moviesVideos.map((video) => (
+                  <div key={video.id}>
+                    <h4>{video.name}</h4>
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://www.youtube.com/embed/${video.key}`}
+                      title={video.name}
+                    ></iframe>
+                  </div>
+                ))
+              ) : (
+                <p>No videos available.</p>
+              )}
+        </ContainerMovie>
+        {similar && (
+          <Slider info={similar} title="Filmes Similar" />
+        )}
+      </>
       )}
+
     </>
   );
 }

@@ -90,7 +90,7 @@ function Home() {
       
       {showModal && (
           <Modal 
-            movieId={featuredMovie?.id} 
+            movieId={featuredMovie.id} 
             setShowModal={setShowModal}  // ← Mudar de setIsOpen para setShowModal
           />
         )}

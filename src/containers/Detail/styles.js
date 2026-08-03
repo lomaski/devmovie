@@ -89,3 +89,31 @@ export const Info = styled.div`
     margin-top: 20px;
   }
 `;
+
+export const ContainerMovie = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  
+  div {
+    display: flex;
+    flex-direction: column;
+    max-width: 1000px;
+    width: 100%;
+    height: 100%;
+    margin: 50px;
+  }
+
+  h4 {
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  iframe {
+    border: none;
+  }
+`
