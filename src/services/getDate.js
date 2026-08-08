@@ -65,3 +65,16 @@ export async function getMovieCredits(movieId) {
     const { data: { cast } } = await api.get(`/movie/${movieId}/credits`);
     return cast;
 }
+
+export async function getMovieChanges() {
+    const { 
+        data: { results } } = 
+        await api.get('/movie/changes');
+    
+    return results;
+}
+
+export async function getImages(movieId) {
+    const { data: { results } } = await api.get(`/collection/${movieId}/images`);
+    return results;
+}
