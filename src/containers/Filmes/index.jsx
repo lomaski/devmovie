@@ -1,58 +1,60 @@
 import api from '../../services/api';
 import { useState, useEffect } from 'react';
-import { getMovieChanges } from '../../services/getDate';
-import { Container } from '../Home/styles';
+import { getMovieM } from '../../services/getDate'; // Função importada
+import { Container, Data, Movier } from '../Filmes/styles';
+import Card from '../../components/Card';
 import getImages from '../../utils/getImages';
 
 function Filmes() {
-  const [movieChanges, setMovieChanges] = useState([]);
+  const [movie, setMovieM] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMovieChanges = async () => {
+    // Mudei o nome da função interna para evitar conflito com a importada
+    async function fetchMovies() {
       try {
         setLoading(true);
-        const changes = await getMovieChanges();
-        const images = await Promise.all(changes.map((change) => getImages(change.id)));
-        setMovieChanges(changes);
+        setError(null);
+        
+        // Chama a função que veio do serviço de dados
+        const movies = await getMovieM(); 
+        setMovieM(movies);
       } catch (err) {
-        setError('Erro ao carregar as mudanças dos filmes.');
-        console.error(err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
-    };
+    }
 
-    fetchMovieChanges();
-  }, []);
+    // Executa a função interna assim que o componente monta
+    fetchMovies(); 
+  }, []); // Array vazio garante que roda apenas uma vez
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
+  // Removida a chamada solta que quebrava o app
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  console.log('Movie Changes:', movieChanges);
+  //console.log(movie);
 
   return (
-    <>
-      <Container>
-        <h1>Filmes</h1>
-        <div>
-          {movieChanges.map((change) => (
-            <div key={change.id}>
-              {change.id}
-              
-              <h2>{change.title}</h2>
-            </div>
-          ))}
-        </div>
-      </Container>
-    </>
+    <Container>
+      {loading && <p>Carregando...</p>}
+      {error && <p>Erro: {error}</p>}
+      
+      {movie.length > 0 && (
+        <Data>
+          <h3>Filmes</h3>
+          <div className="movies-list">
+            {movie.map((movie) => (
+              <Movier key={movie.id}> 
+                <Card info={movie} /> 
+              </Movier>
+            ))}
+          </div>
+        </Data>
+      )}
+    </Container>
   );
+
 }
 
 export default Filmes;

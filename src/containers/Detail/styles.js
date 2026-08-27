@@ -115,5 +115,6 @@ export const ContainerMovie = styled.div`
 
   iframe {
     border: none;
+    height: 500px;
   }
 `

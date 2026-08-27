@@ -74,7 +74,9 @@ export async function getMovieChanges() {
     return results;
 }
 
-export async function getImages(movieId) {
-    const { data: { results } } = await api.get(`/collection/${movieId}/images`);
+export async function getMovieM() {
+    const { 
+        data: { results }} = 
+        await api.get('/discover/movie');
     return results;
 }
