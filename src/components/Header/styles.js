@@ -26,6 +26,7 @@ export const Menu = styled.ul`
   gap: 50px;
   margin: 0;
   padding: 0;
+  color: ${props => props.$isActive ? '#000' : '#fff'};
 `;
 
 export const Li = styled.li`

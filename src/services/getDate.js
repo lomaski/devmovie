@@ -81,9 +81,29 @@ export async function getMovieM() {
     return results;
 }
 
-export async function getTVM() {
+export async function getTvM() {
     const { 
         data: { results }} = 
-        await api.get('/genre/tv/list');
+        await api.get('/discover/tv');
     return results;
+}
+
+export async function getTvImagem(tvId) {
+    const { 
+        data} = 
+        await api.get(`/tv/${tvId}/images`);
+    return data;
+}
+
+/* Genres */
+export async function getGenres() {
+    const {data} = 
+        await api.get('/genre/movie/list');
+    return data;
+}
+
+export async function getTvGenres() {
+    const {data} = 
+        await api.get('/genre/tv/list');
+    return data;
 }

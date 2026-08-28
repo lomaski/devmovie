@@ -1,9 +1,7 @@
-import api from '../../services/api';
 import { useState, useEffect } from 'react';
 import { getMovieM } from '../../services/getDate'; // Função importada
 import { Container, Data, Movier } from '../Filmes/styles';
 import Card from '../../components/Card';
-import getImages from '../../utils/getImages';
 
 function Filmes() {
   const [movie, setMovieM] = useState([]);
