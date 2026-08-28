@@ -80,3 +80,10 @@ export async function getMovieM() {
         await api.get('/discover/movie');
     return results;
 }
+
+export async function getTVM() {
+    const { 
+        data: { results }} = 
+        await api.get('/genre/tv/list');
+    return results;
+}
