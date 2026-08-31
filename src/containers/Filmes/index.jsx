@@ -1,58 +1,79 @@
-import { useState, useEffect } from 'react';
-import { getMovieM } from '../../services/getDate'; // Função importada
+import { useState, useEffect, useMemo } from 'react';
+import { getMovieM, getGenres } from '../../services/getDate'; 
 import { Container, Data, Movier } from '../Filmes/styles';
 import Card from '../../components/Card';
 
 function Filmes() {
   const [movie, setMovieM] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
-    // Mudei o nome da função interna para evitar conflito com a importada
     async function fetchMovies() {
       try {
         setLoading(true);
         setError(null);
         
-        // Chama a função que veio do serviço de dados
-        const movies = await getMovieM(); 
-        setMovieM(movies);
+        const movies = await getMovieM();
+        const genresData = await getGenres(); 
+         
+        setMovieM(movies || []);
+        setGenres(genresData || []);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
-
-    // Executa a função interna assim que o componente monta
     fetchMovies(); 
-  }, []); // Array vazio garante que roda apenas uma vez
+  }, []);
 
-  // Removida a chamada solta que quebrava o app
-
-  //console.log(movie);
+  // Otimização com useMemo: só recalcula o filtro se 'movie' ou 'selectedGenre' mudarem
+  const filteredMovies = useMemo(() => {
+    if (!selectedGenre) return movie;
+    return movie.filter((m) => m.genre_ids?.includes(Number(selectedGenre)));
+  }, [movie, selectedGenre]);
 
   return (
     <Container>
       {loading && <p>Carregando...</p>}
       {error && <p>Erro: {error}</p>}
       
-      {movie.length > 0 && (
+      {!loading && !error && movie.length > 0 && (
         <Data>
           <h3>Filmes</h3>
-          <div className="movies-list">
-            {movie.map((movie) => (
-              <Movier key={movie.id}> 
-                <Card info={movie} /> 
-              </Movier>
+          
+          <select 
+            name="genres" 
+            id="genres"
+            value={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+          >
+            <option value="">Todos os gêneros</option>
+            {Array.isArray(genres) && genres.map((genre) => (
+              <option key={genre.id} value={genre.id}>
+                {genre.name}
+              </option>
             ))}
+          </select>
+
+          <div className="movies-list">
+            {filteredMovies.length > 0 ? (
+              filteredMovies.map((movie) => (
+                <Movier key={movie.id}> 
+                  <Card info={movie} /> 
+                </Movier>
+              ))
+            ) : (
+              <p>Nenhum filme encontrado para este gênero.</p>
+            )}
           </div>
         </Data>
       )}
     </Container>
   );
-
 }
 
 export default Filmes;

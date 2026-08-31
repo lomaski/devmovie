@@ -97,13 +97,13 @@ export async function getTvImagem(tvId) {
 
 /* Genres */
 export async function getGenres() {
-    const {data} = 
+    const {data: { genres }} = 
         await api.get('/genre/movie/list');
-    return data;
+    return genres;
 }
 
 export async function getTvGenres() {
-    const {data} = 
+    const {data: { genres }} = 
         await api.get('/genre/tv/list');
-    return data;
+    return genres;
 }

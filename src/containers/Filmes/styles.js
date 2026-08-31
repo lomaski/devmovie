@@ -20,6 +20,16 @@ export const Data = styled.div`
         flex-wrap: wrap; /* 👈 ESSENCIAL: Se tiver muitos filmes, eles quebram para a próxima linha em vez de esmagar */
         gap: 20px;       /* 👈 Cria um espaçamento perfeito e igual entre os cards */
     }
+
+    select {
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #000;
+        color: #fff;
+    }
 `;
 
 export const Movier = styled.div`

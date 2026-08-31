@@ -25,6 +25,16 @@ export const Data = styled.div`
             justify-content: center;
         }
     }
+
+    select {
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #000;
+        color: #fff;
+    }
 `;
 
 export const Movier = styled.div`
