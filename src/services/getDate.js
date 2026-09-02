@@ -74,26 +74,33 @@ export async function getMovieChanges() {
     return results;
 }
 
-export async function getMovieM() {
+export async function getMovieM(page = 1) {
+  const { data: { results } } = await api.get('/movie/popular', {
+    params: {
+      page: page 
+    }
+  });
+  return results;
+}
+
+export async function getTvM(page = 1) {
     const { 
         data: { results }} = 
-        await api.get('/discover/movie');
+        await api.get('/discover/tv', {
+            params: {
+                page: page 
+        }
+        });
     return results;
 }
 
-export async function getTvM() {
+export async function getMtv(id, page = 1) {
     const { 
         data: { results }} = 
-        await api.get('/discover/tv');
+        await api.get(`/discover/${id}?page=${page}`);
     return results;
 }
 
-export async function getTvImagem(tvId) {
-    const { 
-        data} = 
-        await api.get(`/tv/${tvId}/images`);
-    return data;
-}
 
 /* Genres */
 export async function getGenres() {

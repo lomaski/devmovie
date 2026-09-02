@@ -1,11 +1,37 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    padding: 20px;
-    margin-top: 50px;
-    width: 100%;
-    box-sizing: border-box; /* Garante que o padding não quebre a largura total */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 30px 0;
+
+  button {
+    background-color: #d4af37; /* A cor dourada padrão do seu app */
+    color: #111;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #fff;
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      background-color: #555;
+      color: #999;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
 `;
+
 
 export const Data = styled.div`
     h3 {
@@ -14,16 +40,12 @@ export const Data = styled.div`
         text-align: left;
     }
 
+    /* Essa é a caixinha que agora vai alinhar os cards lado a lado */
     .movies-list {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap; 
-        gap: 20px;       
-        
-        /* Centraliza os cards em telas muito pequenas (opcional, melhora o visual no celular) */
-        @media (max-width: 480px) {
-            justify-content: center;
-        }
+        flex-wrap: wrap; /* 👈 ESSENCIAL: Se tiver muitos filmes, eles quebram para a próxima linha em vez de esmagar */
+        gap: 20px;       /* 👈 Cria um espaçamento perfeito e igual entre os cards */
     }
 
     select {
@@ -39,12 +61,4 @@ export const Data = styled.div`
 
 export const Movier = styled.div`
     display: flex; 
-    /* Define uma largura base para o card, permitindo que ele cresça ou diminua se necessário */
-    flex: 1 1 200px; 
-    /* Define o tamanho máximo para o card não esticar infinitamente em telas gigantes */
-    max-width: 250px; 
-
-    @media (max-width: 480px) {
-        max-width: 100%; /* No celular, o card pode ocupar a largura total se necessário */
-    }
 `;

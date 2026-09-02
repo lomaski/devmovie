@@ -1,77 +1,111 @@
-import { useState, useEffect } from 'react'; 
-import { getTvM, getTvGenres} from '../../services/getDate'; 
-import { Container, Data, Movier } from '../Series/styles'; 
-import Card from '../../components/Card'; 
+import { useState, useEffect, useMemo } from 'react';
+import { getTvM, getTvGenres } from '../../services/getDate';
+import { Container, Data, Movier } from '../Series/styles'; // Estilos da sua página de séries
+import Card from '../../components/Card';
+import Mais from '../../components/Mais'; // 👈 O mesmo botão reutilizado!
 
-function Series() { 
-  const [tv, setTv] = useState([]); 
-  const [genres, setGenres] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
+function Series() {
+  const [series, setSeries] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [page, setPage] = useState(1); // Controla a página de séries
 
-  // 1. Criar o estado para armazenar o ID do gênero selecionado
-  const [selectedGenre, setSelectedGenre] = useState(""); 
+  // Carregamento inicial (Página 1 + Gêneros das Séries)
+  useEffect(() => {
+    async function fetchInitialData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const [seriesData, genresData] = await Promise.all([
+          getTvM(1), 
+          getTvGenres()
+        ]);
+         
+        setSeries(seriesData || []);
+        setGenres(genresData || []);
+      } catch (err) {
+        setError(err.message || "Ocorreu um erro ao carregar as séries.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchInitialData(); 
+  }, []);
 
-  useEffect(() => { 
-    async function fetchTv() { 
-      try { 
-        setLoading(true); 
-        setError(null); 
-        const movies = await getTvM(); 
-        const genresData = await getTvGenres(); 
-        setTv(movies); 
-        setGenres(genresData); 
-      } catch (err) { 
-        setError(err.message); 
-      } finally { 
-        setLoading(false); 
-      } 
-    } 
+  // Monitora o estado 'page' para buscar mais séries e acumular no array
+  useEffect(() => {
+    if (page === 1) return;
 
-    fetchTv(); 
-  }, []); 
+    async function loadMoreSeries() {
+      try {
+        setLoadingMore(true);
+        const newSeries = await getTvM(page);
+        
+        // Junta as antigas com as novas
+        setSeries((prevSeries) => [...prevSeries, ...(newSeries || [])]);
+      } catch (err) {
+        console.error("Erro ao carregar mais séries:", err.message);
+      } finally {
+        setLoadingMore(false);
+      }
+    }
+    loadMoreSeries();
+  }, [page]);
 
-  // 2. Filtrar as séries localmente com base no gênero selecionado
-  const filteredTv = selectedGenre
-    ? tv.filter((item) => item.genre_ids?.includes(Number(selectedGenre)))
-    : tv;
+  // Filtro inteligente de gêneros para séries
+  const filteredSeries = useMemo(() => {
+    if (!selectedGenre) return series;
+    const genreId = Number(selectedGenre);
+    return series.filter((item) => item.genre_ids?.includes(genreId));
+  }, [series, selectedGenre]);
 
-  return ( 
-    <Container> 
-      {loading && <p>Carregando...</p>} 
-      {error && <p>Erro: {error}</p>} 
-      
-      {!loading && !error && tv.length > 0 && ( 
-        <Data> 
-          <h3>Séries</h3>
+  if (loading) return <Container><p>Carregando séries...</p></Container>;
+  if (error) return <Container><p>Erro: {error}</p></Container>;
 
-          {/* 3. Adicionar o valor controlado e o onChange no select */}
-          <select 
-            name="genres" 
-            id="genres"
-            value={selectedGenre}
-            onChange={(e) => setSelectedGenre(e.target.value)}
-          >
-            <option value="">Todos os gêneros</option>
-            {genres.map((genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </select>
+  return (
+    <Container>
+      <Data>
+        <h3>Séries de TV</h3>
+        
+        <select 
+          value={selectedGenre}
+          onChange={(e) => setSelectedGenre(e.target.value)}
+        >
+          <option value="">Todos os gêneros</option>
+          {Array.isArray(genres) && genres.map((genre) => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
+        </select>
 
-          <div className="movies-list"> 
-            {/* 4. Mapear a lista filtrada (filteredTv) em vez do estado original */}
-            {filteredTv.map((item) => ( 
+        <div className="movies-list">
+          {filteredSeries.length > 0 ? (
+            filteredSeries.map((item) => (
               <Movier key={item.id}> 
                 <Card info={item} /> 
-              </Movier> 
-            ))} 
-          </div> 
-        </Data> 
-      )} 
-    </Container> 
-  ); 
-} 
+              </Movier>
+            ))
+          ) : (
+            <p>Nenhuma série encontrada para este gênero.</p>
+          )}
+        </div>
+
+        {/* 
+          Reutilizando o mesmo componente <Mais> sem mudar nada nele!
+          Ele só vai disparar o setPage da página de Séries.
+        */}
+        <Mais 
+          onClick={() => setPage((prevPage) => prevPage + 1)} 
+          loading={loadingMore} 
+        />
+      </Data>
+    </Container>
+  );
+}
 
 export default Series;
