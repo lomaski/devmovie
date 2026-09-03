@@ -101,6 +101,11 @@ export async function getMtv(id, page = 1) {
     return results;
 }
 
+export async function getPerson(personId) {
+    const { data } = await api.get(`/person/${personId}`);
+    return data;
+}
+
 
 /* Genres */
 export async function getGenres() {

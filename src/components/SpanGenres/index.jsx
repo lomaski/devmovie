@@ -3,7 +3,8 @@ import { Container } from "./styles";
 function SpanGenres({ genres }) {
   return (
     <Container>
-      {genres.map((genre) => (
+      {/* O encadeamento opcional (?.) impede o crash se genres for undefined */}
+      {genres?.map((genre) => (
         <span key={genre.id}>{genre.name}</span>
       ))}
     </Container>
