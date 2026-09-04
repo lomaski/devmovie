@@ -16,6 +16,7 @@ export default function Routes() {
         <Route path="/series" element={<Series />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/pessoas/:id" element={<People />} />
+        <Route path="/tv/:id" element={<Detail />} />
       </Route>
     </RouterRoutes>
   );

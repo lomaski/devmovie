@@ -106,6 +106,11 @@ export async function getPerson(personId) {
     return data;
 }
 
+export async function getTVById(tvId) {
+    const { data } = await api.get(`/tv/${tvId}`);
+    return data;
+}
+
 
 /* Genres */
 export async function getGenres() {
