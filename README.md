@@ -1,8 +1,8 @@
 # DevMovie
 
--HTML
--CSS
--JavaScript
--React
+- HTML
+- CSS
+- JavaScript
+- React
 
 Filmes, serias e atror
