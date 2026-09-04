@@ -69,7 +69,6 @@ function Series() {
   return (
     <Container>
       <Data>
-        <h3>Séries de TV</h3>
         
         <select 
           value={selectedGenre}

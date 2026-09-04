@@ -4,19 +4,19 @@ export const Container = styled.header`
   z-index: 99;
   position: fixed;
   top: 0;
-  left: 0;                  /* Garante que comece no canto esquerdo */
-  width: 100%;              /* OBRIGATÓRIO: fixed precisa disso para ocupar toda a largura */
+  left: 0;                  
+  width: 100%;              
   display: flex;
   justify-content: space-between; 
-  align-items: center;      /* Alinha verticalmente a logo com o menu */
-  padding: 10px 20px;       /* Aumentado para melhor respiro visual */
-  box-sizing: border-box;   /* Garante que o padding não quebre os 100% de largura */
-  background-color: ${props => props.changeBackground ? '#000' : 'transparent'}; /* Fundo transparente inicialmente, escurece ao rolar */
-  transition: background-color 1s ease; /* Transição suave para a mudança de fundo */
+  align-items: center;      
+  padding: 10px 20px;       
+  box-sizing: border-box;
+  background-color: ${props => props.$changeBackground ? '#000' : 'transparent'}; 
+  transition: background-color 0.5s ease; /* Reduzi para 0.5s para responder mais rápido ao scroll */
 
   img {
-    width: auto;            /* Evita distorção usando a proporção original */
-    height: 50px;           /* Controlar por altura fixa costuma ser mais seguro para logos */
+    width: auto;            
+    height: 50px;           
   }
 `;
 
@@ -26,13 +26,15 @@ export const Menu = styled.ul`
   gap: 50px;
   margin: 0;
   padding: 0;
-  color: ${props => props.$isActive ? '#000' : '#fff'};
+  /* Removida a lógica de cor daqui, pois agora ela pertence individualmente ao componente Li */
 `;
 
 export const Li = styled.li`
   position: relative;
   cursor: pointer;
-  color: #fff;
+  /* Se o link estiver ativo e o fundo continuar transparente, você pode mudar a cor se quiser, 
+     ou manter fixo em #fff para destacar com a barra verde */
+  color: #fff; 
   font-size: 25px;
   font-weight: 600;
 
@@ -44,16 +46,16 @@ export const Li = styled.li`
   &::after {
     content: '';
     height: 3px;
-    //width: ${props => props.isActive ? '100%' : '0'};                /* Inicia invisível (sem largura) */
+    /* Descomentado e corrigido para $isActive: se estiver ativo, fica 100% visível por padrão */
+    width: ${props => props.$isActive ? '100%' : '0'};                
     background-color: #00FF00;
     position: absolute;
     bottom: -5px;
     left: 0;
-    transition: width 0.3s ease-in-out; /* Define a velocidade e suavidade da animação */
+    transition: width 0.3s ease-in-out; 
   }
 
   &:hover::after {
-    width: 100%;             /* Expande para 100% ao passar o mouse */
+    width: 100%;             
   }
 `;
-

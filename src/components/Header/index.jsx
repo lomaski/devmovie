@@ -9,7 +9,7 @@ function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!changeBackground && window.scrollY > 50) { // Note: pageYOffset is deprecated, use scrollY
+      if (!changeBackground && window.scrollY > 50) { 
         setChangeBackground(true);
       } else if (changeBackground && window.scrollY <= 50) {
         setChangeBackground(false);
@@ -17,21 +17,25 @@ function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll); // Cleanup
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll); 
+  }, [changeBackground]); // Adicionada a dependência para ler o estado atualizado corretamente
 
   return (
-    <Container changeBackground={changeBackground}>
+    /* Adicionado o '$' para alinhar com o arquivo de estilos */
+    <Container $changeBackground={changeBackground}>
       <img src={Logo} alt="Logo DevMovie" />
 
       <Menu>
-        <Li isActive={pathname === "/"}>
+        {/* Adicionado o '$' nas validações de rota ativa */}
+        <Li $isActive={pathname === "/"}>
           <Link to="/">Início</Link>
         </Li>
-        <Li isActive={pathname.includes("filmes")}>
+        {/* Se sua rota de detalhes for /detail/:id, você pode usar: pathname.includes("filmes") || pathname.includes("detail") */}
+        <Li $isActive={pathname.includes("filmes") || pathname.includes("detail")}>
           <Link to="/filmes">Filmes</Link>
         </Li>
-        <Li isActive={pathname.includes("series")}>
+        {/* Se sua rota de séries for /tv/:id, você pode usar: pathname.includes("series") || pathname.includes("tv") */}
+        <Li $isActive={pathname.includes("series") || pathname.includes("tv")}>
           <Link to="/series">Séries</Link>
         </Li>
       </Menu>

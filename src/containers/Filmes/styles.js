@@ -35,6 +35,8 @@ export const Container = styled.div`
 
 
 export const Data = styled.div`
+    margin-top: 100px; /* Para não ficar escondido atrás do header fixo */
+    
     h3 {
         font-size: 24px;
         margin-bottom: 25px; 
@@ -46,7 +48,8 @@ export const Data = styled.div`
         display: flex;
         flex-direction: row;
         flex-wrap: wrap; /* 👈 ESSENCIAL: Se tiver muitos filmes, eles quebram para a próxima linha em vez de esmagar */
-        gap: 20px;       /* 👈 Cria um espaçamento perfeito e igual entre os cards */
+        gap: 20px;
+        margin-left: 20px;       /* 👈 Cria um espaçamento perfeito e igual entre os cards */
     }
 
     select {
@@ -57,6 +60,7 @@ export const Data = styled.div`
         border: 1px solid #ccc;
         background-color: #000;
         color: #fff;
+        margin-left: 20px;
     }
 `;
 

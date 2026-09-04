@@ -31,6 +31,8 @@ function People() {
     // Agora é 100% seguro acessar as propriedades de personData
     const birthday = new Date(personData.birthday);
 
+    console.log(personData); // Log para depuração
+
     return (
         <Container>
             <Coven>
@@ -39,11 +41,16 @@ function People() {
 
             <Info>
                 <h2>{personData.name}</h2>
+                <p>Conhecido(a) como: {personData.also_known_as.join(", ")}</p>
+                <p>Profissão: {personData.known_for_department}</p>
                 <p>Sexo: {personData.gender === 1 ? "Feminino" : "Masculino"}</p>
-                <p>Carta de nascimento: {birthday.toLocaleDateString()}</p>
+                <p>Nascimento: {birthday.toLocaleDateString()}</p>
+                <p>Local de Nascimento: {personData.place_of_birth}</p>
+                {personData.biography && <p>Biografia: {personData.biography}</p>}
             </Info>
         </Container>
     );
 }
+
 
 export default People;

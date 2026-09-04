@@ -77,7 +77,6 @@ function Filmes() {
   return (
     <Container>
       <Data>
-        <h3>Filmes</h3>
         
         <select 
           name="genres" 
