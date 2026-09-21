@@ -591,4 +591,4 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     background-color: #000!important;
     color: rgb(255, 255, 255)!important;
   }
-`;(0,eo.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(S.StrictMode,{children:(0,G.jsxs)(kn,{children:[(0,G.jsx)(Gf,{}),` `,(0,G.jsx)(Wf,{})]})}));
+`;(0,eo.createRoot)(document.getElementById(`root`)).render((0,G.jsx)(S.StrictMode,{children:(0,G.jsxs)(kn,{basename:`/devmovie`,children:[(0,G.jsx)(Gf,{}),(0,G.jsx)(Wf,{})]})}));
