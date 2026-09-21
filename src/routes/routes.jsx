@@ -6,7 +6,6 @@ import Detail from "../containers/Detail";
 import People from "../containers/People";
 import DefaultLayout from "../layout/DefaultLayout";
 
-
 export default function Routes() {
   return (
     <RouterRoutes>

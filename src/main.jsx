@@ -6,8 +6,8 @@ import GlobalStyle from './styled/globalStyles.js'; // Default import
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <GlobalStyle /> {/* Use as component */}
+    <BrowserRouter basename="/devmovie">
+      <GlobalStyle />
       <Routes />
     </BrowserRouter>
   </StrictMode>
