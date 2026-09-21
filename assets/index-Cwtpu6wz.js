@@ -222,7 +222,6 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     color: #ff0000;
   }
 `;function df({movieId:e,setShowModal:t}){let[n,r]=(0,S.useState)(null);return(0,S.useEffect)(()=>{async function t(){r(await t(e))}t()},[]),console.log(n),n?(0,G.jsx)(cf,{onClick:()=>t(!1),children:n&&(0,G.jsxs)(lf,{onClick:e=>e.stopPropagation(),children:[(0,G.jsx)(uf,{onClick:()=>t(!1),children:`X`}),(0,G.jsx)(`iframe`,{width:`100%`,height:`500px`,src:`https://www.youtube.com/embed/${n.key}`,title:n.name})]})}):(0,G.jsxs)(cf,{children:[`Filme não encontrado.`,(0,G.jsx)(uf,{onClick:()=>t(!1),children:`X`})]})}var ff=W.div`
-    /* ALTERADO: Adicionado o $ antes de image */
     background-image: url(${e=>e.$image});
     height: 100vh;
     background-size: cover;
@@ -231,6 +230,14 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     align-items: center;
     justify-content: center;
     position: relative; 
+
+    /* Ajuste para telas menores não cortarem o topo */
+    @media (max-width: 768px) {
+        height: auto;
+        min-height: 100vh;
+        padding-top: 140px; /* Dá espaço para o Header que ficou maior no mobile */
+        padding-bottom: 40px;
+    }
 
     &::before {
         content: "";
@@ -242,7 +249,22 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
         background: rgba(0, 0, 0, 0.5);
         z-index: 1; 
     }
-`,pf=W.div`
+`,pf=W.section`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+    max-width: 1500px;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    /* 👇 EMPILHA OS ELEMENTOS NO MOBILE */
+    @media (max-width: 768px) {
+        flex-direction: column-reverse; /* Coloca o pôster em cima e o texto embaixo */
+        gap: 30px;
+    }
+`,mf=W.div`
     color: #fff;
     z-index: 2; 
     position: relative; 
@@ -251,11 +273,24 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     padding: 30px; 
     margin: 10% 0;
 
+    /* 👇 Ajusta o bloco de texto para ocupar a largura total no mobile */
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
     h1 {
         font-size: 5rem;
         font-weight: 700;
         margin: 0; 
         text-align: left; 
+
+        /* 👇 Reduz o título gigante para caber na tela do celular */
+        @media (max-width: 768px) {
+            font-size: 2.5rem;
+            text-align: center; /* Centraliza para harmonizar no mobile */
+        }
     }
 
     p {
@@ -265,25 +300,43 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
         margin-bottom: 20px;
         line-height: 1.5; 
         text-align: left; 
+
+        /* 👇 Melhora a leitura do parágrafo no celular */
+        @media (max-width: 768px) {
+            font-size: 16px;
+            text-align: center;
+            margin-top: 15px;
+        }
     }
-`,mf=W.section`
-    display: flex;
-    align-items: space-around;
-    justify-content: center;
-    height: 100%;
-    max-width: 1500px;
 `,hf=W.div`
     z-index: 2; 
+    display: flex;
+    justify-content: center;
+
     img {
         width: 400px;
+        max-width: 100%; /* 👇 Impede a imagem de estourar a tela */
         border-radius: 30px;
         margin-top: 100px;
+
+        /* 👇 Ajusta o pôster para tamanhos de celular */
+        @media (max-width: 768px) {
+            width: 260px;
+            margin-top: 0;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5); /* Efeito de sombra legal */
+        }
     }
 `,gf=W.div`
     display: flex;
     gap: 20px;
-    margin: 30px;
-`;function _f(){let e=ut(),[t,n]=(0,S.useState)(!1),[r,i]=(0,S.useState)(null),[a,o]=(0,S.useState)([]),[s,c]=(0,S.useState)([]),[l,u]=(0,S.useState)([]),[d,f]=(0,S.useState)([]),[p,m]=(0,S.useState)(!0),[h,g]=(0,S.useState)(null);return(0,S.useEffect)(()=>{async function e(){try{m(!0),g(null);let[e,t,n,r,a]=await Promise.all([no(),ro(),io(),ao(),oo()]);i(e),o(t),c(n),u(r),f(a)}catch(e){g(`Erro ao carregar dados. Tente novamente.`),console.error(`Erro ao buscar dados:`,e)}finally{m(!1)}}e()},[]),p?(0,G.jsx)(`div`,{children:`Carregando...`}):h?(0,G.jsx)(`div`,{children:h}):(0,G.jsxs)(G.Fragment,{children:[r&&(0,G.jsx)(ff,{$image:Cl(r.backdrop_path),children:(0,G.jsxs)(mf,{children:[(0,G.jsxs)(pf,{children:[(0,G.jsx)(`h1`,{children:r.title}),(0,G.jsx)(`p`,{children:r.overview}),(0,G.jsxs)(gf,{children:[(0,G.jsx)(Il,{variant:`red`,onClick:()=>e(`/detail/${r.id}`),children:`Assistir agora`}),(0,G.jsx)(Il,{variant:`white`,onClick:()=>n(!0),children:`Assistir o Trailer`})]})]}),(0,G.jsx)(hf,{children:(0,G.jsx)(`img`,{src:Cl(r.poster_path),alt:r.title})})]})}),a.length>0&&(0,G.jsx)(sf,{info:a,title:`Top Rated`}),s.length>0&&(0,G.jsx)(sf,{info:s,title:`Top Rated TV`}),l.length>0&&(0,G.jsx)(sf,{info:l,title:`Popular`}),d.length>0&&(0,G.jsx)(sf,{info:d,title:`Top Popular`}),t&&(0,G.jsx)(df,{movieId:r.id,setShowModal:n})]})}var vf=W.div`
+    margin: 30px 0; /* Removido margem lateral para não quebrar alinhamento */
+
+    /* 👇 Centraliza os botões no mobile */
+    @media (max-width: 768px) {
+        justify-content: center;
+        margin: 20px 0 0 0;
+    }
+`;function _f(){let e=ut(),[t,n]=(0,S.useState)(!1),[r,i]=(0,S.useState)(null),[a,o]=(0,S.useState)([]),[s,c]=(0,S.useState)([]),[l,u]=(0,S.useState)([]),[d,f]=(0,S.useState)([]),[p,m]=(0,S.useState)(!0),[h,g]=(0,S.useState)(null);return(0,S.useEffect)(()=>{async function e(){try{m(!0),g(null);let[e,t,n,r,a]=await Promise.all([no(),ro(),io(),ao(),oo()]);i(e),o(t),c(n),u(r),f(a)}catch(e){g(`Erro ao carregar dados. Tente novamente.`),console.error(`Erro ao buscar dados:`,e)}finally{m(!1)}}e()},[]),p?(0,G.jsx)(`div`,{children:`Carregando...`}):h?(0,G.jsx)(`div`,{children:h}):(0,G.jsxs)(G.Fragment,{children:[r&&(0,G.jsx)(ff,{$image:Cl(r.backdrop_path),children:(0,G.jsxs)(pf,{children:[(0,G.jsxs)(mf,{children:[(0,G.jsx)(`h1`,{children:r.title}),(0,G.jsx)(`p`,{children:r.overview}),(0,G.jsxs)(gf,{children:[(0,G.jsx)(Il,{variant:`red`,onClick:()=>e(`/detail/${r.id}`),children:`Assistir agora`}),(0,G.jsx)(Il,{variant:`white`,onClick:()=>n(!0),children:`Assistir o Trailer`})]})]}),(0,G.jsx)(hf,{children:(0,G.jsx)(`img`,{src:Cl(r.poster_path),alt:r.title})})]})}),a.length>0&&(0,G.jsx)(sf,{info:a,title:`Top Rated`}),s.length>0&&(0,G.jsx)(sf,{info:s,title:`Top Rated TV`}),l.length>0&&(0,G.jsx)(sf,{info:l,title:`Popular`}),d.length>0&&(0,G.jsx)(sf,{info:d,title:`Top Popular`}),t&&(0,G.jsx)(df,{movieId:r.id,setShowModal:n})]})}var vf=W.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -541,18 +594,23 @@ Please change the parent <Route path="${e}"> to <Route path="${e===`/`?`*`:`${e}
     width: auto;            
     height: 50px;           
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse; /* Joga a imagem para cima e o texto para baixo */
+    padding: 20px;
+    text-align: center; /* Centraliza os textos para acomodar melhor */
+  }
 `,Bf=W.ul`
   display: flex;
   list-style: none;
   gap: 50px;
   margin: 0;
   padding: 0;
-  /* Removida a lógica de cor daqui, pois agora ela pertence individualmente ao componente Li */
+
+
 `,Vf=W.li`
   position: relative;
   cursor: pointer;
-  /* Se o link estiver ativo e o fundo continuar transparente, você pode mudar a cor se quiser, 
-     ou manter fixo em #fff para destacar com a barra verde */
   color: #fff; 
   font-size: 25px;
   font-weight: 600;
