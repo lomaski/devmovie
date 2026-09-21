@@ -18,6 +18,12 @@ export const Container = styled.header`
     width: auto;            
     height: 50px;           
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse; /* Joga a imagem para cima e o texto para baixo */
+    padding: 20px;
+    text-align: center; /* Centraliza os textos para acomodar melhor */
+  }
 `;
 
 export const Menu = styled.ul`
@@ -26,14 +32,13 @@ export const Menu = styled.ul`
   gap: 50px;
   margin: 0;
   padding: 0;
-  /* Removida a lógica de cor daqui, pois agora ela pertence individualmente ao componente Li */
+
+
 `;
 
 export const Li = styled.li`
   position: relative;
   cursor: pointer;
-  /* Se o link estiver ativo e o fundo continuar transparente, você pode mudar a cor se quiser, 
-     ou manter fixo em #fff para destacar com a barra verde */
   color: #fff; 
   font-size: 25px;
   font-weight: 600;
