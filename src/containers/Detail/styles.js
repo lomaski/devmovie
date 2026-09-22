@@ -69,6 +69,8 @@ export const Container = styled.div`
     align-items: center;
     margin-top: -50px; /* Sobe um pouco menos no celular */
     gap: 20px;
+    padding: 20px;
+    text-align: center;
   }
 `;
 
