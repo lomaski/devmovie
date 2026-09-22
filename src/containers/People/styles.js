@@ -22,11 +22,10 @@ export const Container = styled.div`
 export const Coven = styled.div`
     display: flex;
     justify-content: center;
+    height: 300px;
 
     img {
-        width: 300px;
-        max-width: 100%; /* 👇 Impede que a foto estoure em celulares bem pequenos */
-        height: auto;   /* Mantém a proporção da foto */
+        max-width: 100%;
         border-radius: 8px;
         box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
 
