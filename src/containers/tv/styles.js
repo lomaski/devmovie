@@ -15,7 +15,12 @@ export const Background = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  position: relative; /* ADICIONADO: Necessário para que o ::before e ::after fiquem presos dentro do Background */
+  position: relative;
+
+  /* 👇 Garante tamanho mínimo no mobile */
+  @media (max-width: 768px) {
+    height: 50vh;
+  }
 
   &::before {
     content: "";
@@ -24,7 +29,7 @@ export const Background = styled.div`
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* AJUSTADO: Mudado de 80% para 100% para cobrir todo o container caso queira o efeito completo */
+    height: 100%;
   }
 
   &::after {
@@ -42,6 +47,7 @@ export const Foxy = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  width: 100%; /* 👇 Adicionado para evitar quebras */
 `;
 
 export const Container = styled.div`
@@ -50,17 +56,35 @@ export const Container = styled.div`
   align-items: flex-start;
   height: 100%;
   max-width: 1500px;
-  margin: -100px auto 0 auto; /* AJUSTADO: Centraliza o container na tela horizontalmente */
-  position: relative; /* ADICIONADO: Garante que o z-index funcione corretamente */
-  z-index: 2; /* AJUSTADO: Aumentado para 2 para garantir que fique acima das máscaras do Background */
+  width: 100%;
+  margin: -100px auto 0 auto;
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  /* 👇 EMPILHA O PÔSTER E AS INFORMAÇÕES NO MOBILE */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    margin-top: -50px; /* Sobe um pouco menos no celular */
+    gap: 20px;
+  }
 `;
 
 export const Coven = styled.div`
   width: 500px;
+  max-width: 100%; /* 👇 Impede que o pôster estoure a tela */
   border-radius: 30px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
   animation: ${fadeIn} 0.5s linear;
   margin-bottom: 50px;
+
+  /* 👇 Reduz o tamanho do pôster no celular */
+  @media (max-width: 768px) {
+    width: 280px;
+    margin-bottom: 10px;
+  }
 
   img {
     width: 100%;
@@ -77,16 +101,32 @@ export const Info = styled.div`
   align-items: flex-start;
   width: 50%;
 
+  /* 👇 Texto ocupa largura total e centraliza no mobile */
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+  }
+
   h2 {
     font-size: 50px;
     font-weight: 700;
 
+    @media (max-width: 768px) {
+      font-size: 28px; /* Título menor para celular */
+    }
   }
 
   p {
     font-weight: 700;
     margin-bottom: 30px;
     margin-top: 20px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
   }
 `;
 
@@ -96,6 +136,7 @@ export const ContainerMovie = styled.div`
   justify-content: center;
   padding: 20px;
   width: 100%;
+  box-sizing: border-box;
   
   div {
     display: flex;
@@ -104,6 +145,10 @@ export const ContainerMovie = styled.div`
     width: 100%;
     height: 100%;
     margin: 50px;
+
+    @media (max-width: 768px) {
+      margin: 10px 0; /* Remove margens gigantes no mobile */
+    }
   }
 
   h4 {
@@ -111,10 +156,20 @@ export const ContainerMovie = styled.div`
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
   }
 
   iframe {
     border: none;
     height: 500px;
+    width: 100%;
+
+    /* 👇 Torna o vídeo do YouTube responsivo (não corta nas laterais) */
+    @media (max-width: 768px) {
+      height: 250px; /* Altura proporcional para telas pequenas */
+    }
   }
-`
+`;
